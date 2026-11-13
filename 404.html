@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tezberemo</title>
+<script>
+  // An Instruction Code is printed in upper case (a smaller QR): its page is the lower-case one.
+  var p = location.pathname, l = p.toLowerCase();
+  if (p !== l) location.replace(l + location.search + location.hash);
+</script>
+</head>
+<body style="font: 17px/1.5 system-ui, sans-serif; padding: 2rem;">
+<p>Not found. <a href="/">All instructions</a></p>
+</body>
+</html>
