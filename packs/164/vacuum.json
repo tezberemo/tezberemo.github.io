@@ -1,0 +1,9 @@
+{
+    "id": "vacuum",
+    "title": "Robot vacuum",
+    "versionCode": 164,
+    "unity": "6000.3.26f1",
+    "crc": 391565843,
+    "prefab": "Assets/Packs/vacuum/vacuum.prefab",
+    "instruction": "Assets/Packs/vacuum/Content/vacuum.asset"
+}
