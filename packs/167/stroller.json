@@ -1,0 +1,9 @@
+{
+    "id": "stroller",
+    "title": "Stroller",
+    "versionCode": 167,
+    "unity": "6000.3.26f1",
+    "crc": 113495895,
+    "prefab": "Assets/Packs/stroller/stroller.prefab",
+    "instruction": "Assets/Packs/stroller/Content/stroller.asset"
+}
