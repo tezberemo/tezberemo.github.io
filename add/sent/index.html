@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4f1ea">
+<title>Thank you · Tezberemo</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --sheet: #ffffff;
+    --ink: #1d1d1f;
+    --muted: #5c5a55;
+    --line: #dcd7cc;
+    --accent: #0a66c2;
+    --radius-lg: 20px;
+    --shadow: 0 1px 2px rgba(60, 50, 30, .06), 0 8px 28px rgba(60, 50, 30, .08);
+    --focus: 0 0 0 3px #fff, 0 0 0 5px var(--accent);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; min-height: 100vh;
+    font: 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink); background: var(--bg);
+  }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 4px; }
+
+  .top { max-width: 40rem; margin: 0 auto; padding: 20px 16px 14px; }
+  .brand {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: 1.05rem; letter-spacing: -.01em;
+    color: var(--ink); text-decoration: none;
+  }
+  .brand svg { width: 22px; height: 22px; }
+
+  .sheet {
+    max-width: 40rem; margin: 8px 16px 32px;
+    background: var(--sheet); border-radius: var(--radius-lg); box-shadow: var(--shadow);
+    padding: 36px 24px 32px; text-align: center;
+  }
+  @media (min-width: 42rem) {
+    .top { padding: 36px 16px 18px; }
+    .sheet { margin: 0 auto 48px; padding: 56px 64px 48px; }
+  }
+
+  .draw { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .draw .acc { stroke: var(--accent); }
+  .draw .fill { fill: var(--sheet); }
+  .draw .dash { stroke: #b9b2a3; stroke-dasharray: 1 5; }
+
+  .art { width: 148px; height: 112px; display: block; margin: 0 auto 20px; }
+  h1 { font-size: 1.9rem; line-height: 1.15; letter-spacing: -.02em; margin: 0 0 14px; }
+  @media (min-width: 42rem) { h1 { font-size: 2.3rem; } }
+  p { margin: 0 auto 12px; max-width: 30rem; }
+  .muted { color: var(--muted); }
+  .back {
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line);
+    width: 100%; font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../../">
+    <svg viewBox="0 0 24 24" class="draw" aria-hidden="true"><path d="M5 3.5h10l4 4v13H5z" class="fill"/><path d="M15 3.5v4h4M8.5 11h7M8.5 14h7M8.5 17h4"/></svg>
+    Tezberemo
+  </a>
+</header>
+
+<main class="sheet">
+  <svg class="art draw" viewBox="0 0 148 112" aria-hidden="true">
+    <path class="dash" d="M12 96c18-4 30-14 40-26s20-22 34-26"/>
+    <path class="fill" d="M138 14 58 46l24 10z"/>
+    <path class="fill" d="M138 14 82 56l14 34z"/>
+    <path d="M82 56 74 76l8-6"/>
+    <path class="acc" d="M138 14 82 56"/>
+  </svg>
+  <h1>We have it. Thank you.</h1>
+  <p>A person on our team will read what you sent and write to your email: whether we can make this Instruction, and what else we need.</p>
+  <p class="muted">We are a small team and make each Instruction by hand, so we can't promise a date.</p>
+  <a class="back" href="../../">← All instructions</a>
+</main>
+</body>
+</html>

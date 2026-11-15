@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f1ea">
+<title>An Instruction for your thing · Tezberemo</title>
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --sheet: #ffffff;
+    --ink: #1d1d1f;
+    --muted: #5c5a55;
+    --line: #dcd7cc;
+    --line-strong: #b9b2a3;
+    --field: #fbfaf7;
+    --accent: #0a66c2;
+    --accent-ink: #084f96;
+    --accent-soft: #e8f1fb;
+    --ok: #1f7a4d;
+    --warn: #a14a00;
+    --radius: 12px;
+    --radius-lg: 20px;
+    --shadow: 0 1px 2px rgba(60, 50, 30, .06), 0 8px 28px rgba(60, 50, 30, .08);
+    --focus: 0 0 0 3px #fff, 0 0 0 5px var(--accent);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font: 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible { outline: none; box-shadow: var(--focus); border-radius: 4px; }
+
+  .top { width: 100%; max-width: 40rem; margin: 0 auto; padding: 20px 20px 14px; }
+  .brand {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 700; font-size: 1.05rem; letter-spacing: -.01em;
+    color: var(--ink); text-decoration: none;
+  }
+  .brand svg { width: 22px; height: 22px; }
+
+  .sheet {
+    width: 100%; max-width: 40rem; margin: 0 auto; flex: 1 0 auto;
+    background: var(--sheet);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: var(--shadow);
+    padding: 28px 20px 36px;
+  }
+  @media (min-width: 40rem) {
+    .top { padding: 36px 16px 18px; }
+    .sheet { flex: none; border-radius: var(--radius-lg); padding: 48px 56px 44px; margin-bottom: 48px; }
+  }
+
+  h1 { font-size: 1.9rem; line-height: 1.15; letter-spacing: -.02em; margin: 0 0 10px; }
+  @media (min-width: 40rem) { h1 { font-size: 2.3rem; } }
+  .lead { margin: 0; color: var(--muted); font-size: 1.05rem; }
+
+  /* What to send */
+  .send-list {
+    list-style: none; margin: 24px 0 8px; padding: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  }
+  .send-list li {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 14px 6px 12px;
+    border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--field);
+    text-align: center; font-size: .86rem; line-height: 1.25; font-weight: 600;
+  }
+  .send-list svg { width: 52px; height: 52px; }
+
+  /* Lines in the assembly-manual style */
+  .draw { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .draw .acc { stroke: var(--accent); }
+  .draw .fill { fill: var(--sheet); }
+
+  /* Form */
+  form { margin: 0; }
+  .field { margin-top: 28px; }
+  .label { display: block; font-weight: 650; font-size: 1.02rem; margin: 0 0 2px; }
+  .opt {
+    display: inline-block; margin-left: 6px; padding: 1px 8px;
+    font-size: .75rem; font-weight: 600; letter-spacing: .02em; vertical-align: 2px;
+    color: var(--muted); background: #efebe2; border-radius: 999px;
+  }
+  .hint { margin: 0 0 10px; color: var(--muted); font-size: .92rem; line-height: 1.4; }
+
+  input[type=text], input[type=email], textarea {
+    display: block; width: 100%; min-height: 48px;
+    font: inherit; color: var(--ink);
+    padding: 11px 14px;
+    background: var(--field);
+    border: 1.5px solid var(--line-strong); border-radius: var(--radius);
+    transition: border-color .15s, box-shadow .15s, background .15s;
+  }
+  textarea { min-height: 112px; resize: vertical; line-height: 1.45; }
+  input[type=text]:hover, input[type=email]:hover, textarea:hover { border-color: #8f8778; }
+  input[type=text]:focus, input[type=email]:focus, textarea:focus {
+    outline: none; background: #fff; border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  ::placeholder { color: #8a857b; }
+
+  /* File drop tiles: the real input stays in the label, visually hidden */
+  .drop { position: relative; display: block; cursor: pointer; }
+  .drop input[type=file] {
+    position: absolute; left: 50%; bottom: 0; width: 1px; height: 1px;
+    opacity: 0; overflow: hidden; clip-path: inset(50%);
+  }
+  .drop-face {
+    display: flex; align-items: center; gap: 14px;
+    min-height: 84px; padding: 16px 18px;
+    border: 2px dashed var(--line-strong); border-radius: var(--radius);
+    background: var(--field);
+    transition: border-color .15s, background .15s, box-shadow .15s;
+  }
+  .drop:hover .drop-face { border-color: var(--accent); background: var(--accent-soft); }
+  .drop input:focus-visible + .drop-face { border-color: var(--accent); box-shadow: var(--focus); }
+  .drop-face svg { flex: none; width: 40px; height: 40px; }
+  .drop-text { display: flex; flex-direction: column; min-width: 0; }
+  .drop-title { font-weight: 650; color: var(--accent-ink); }
+  .drop-sub { color: var(--muted); font-size: .9rem; line-height: 1.35; }
+  .drop.big .drop-face { min-height: 120px; }
+  .drop.has .drop-face { border-style: solid; border-color: var(--line); }
+
+  .shots {
+    list-style: none; margin: 10px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px;
+  }
+  .shots:empty { display: none; }
+  .shots li {
+    aspect-ratio: 1; border-radius: 10px; overflow: hidden;
+    background: #ece8df; border: 1px solid var(--line);
+  }
+  .shots img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .count { margin: 8px 0 0; font-size: .9rem; color: var(--muted); }
+  .count:empty { display: none; }
+  .count.over { color: var(--warn); font-weight: 600; }
+
+  .doc {
+    display: flex; align-items: center; gap: 10px; margin: 10px 0 0; padding: 10px 12px;
+    border: 1px solid var(--line); border-radius: 10px; background: #fff;
+    font-size: .93rem;
+  }
+  .doc[hidden] { display: none; }
+  .doc svg { flex: none; width: 24px; height: 24px; }
+  .doc span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Role: radios as a segmented control */
+  fieldset { border: 0; margin: 28px 0 0; padding: 0; min-width: 0; }
+  legend { padding: 0; margin: 0 0 10px; font-weight: 650; font-size: 1.02rem; }
+  .seg {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+    padding: 4px; background: #efebe2; border-radius: 14px;
+  }
+  .seg label { position: relative; display: block; cursor: pointer; }
+  .seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .seg span {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 44px; padding: 6px 6px; border-radius: 10px;
+    text-align: center; font-size: .9rem; line-height: 1.2; font-weight: 550; color: var(--muted);
+    transition: background .15s, color .15s, box-shadow .15s;
+  }
+  .seg label:hover span { color: var(--ink); }
+  .seg input:checked + span {
+    background: #fff; color: var(--ink); font-weight: 650;
+    box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 2px 8px rgba(0,0,0,.06);
+  }
+  .seg input:focus-visible + span { box-shadow: var(--focus); }
+
+  .trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+  /* Send */
+  .actions { margin-top: 32px; }
+  button[type=submit] {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; min-height: 56px; padding: 14px 28px;
+    font: inherit; font-weight: 650; font-size: 1.08rem;
+    color: #fff; background: var(--accent);
+    border: 0; border-radius: 14px; cursor: pointer;
+    box-shadow: 0 1px 2px rgba(10,102,194,.25), 0 6px 16px rgba(10,102,194,.22);
+    transition: background .15s, transform .05s;
+  }
+  button[type=submit]:hover { background: var(--accent-ink); }
+  button[type=submit]:active { transform: translateY(1px); }
+  button[type=submit]:focus-visible { outline: none; box-shadow: var(--focus); }
+  button[type=submit][disabled] { background: #5d8fc4; cursor: progress; box-shadow: none; }
+  button svg { width: 20px; height: 20px; }
+  @media (min-width: 40rem) { button[type=submit] { width: auto; min-width: 220px; } }
+  .status { margin: 10px 0 0; color: var(--muted); font-size: .92rem; }
+
+  .fine {
+    margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line);
+    display: grid; gap: 10px;
+  }
+  .fine p { margin: 0; display: flex; gap: 10px; align-items: flex-start; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+  .fine svg { flex: none; width: 18px; height: 18px; margin-top: 2px; }
+  .fine .draw { stroke: var(--muted); stroke-width: 1.5; }
+
+  .back { display: inline-flex; align-items: center; gap: 6px; margin-top: 24px; font-weight: 600; }
+  .req { color: #b42318; font-weight: 700; }
+  </style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">
+    <svg viewBox="0 0 24 24" class="draw" aria-hidden="true"><path d="M5 3.5h10l4 4v13H5z" class="fill"/><path d="M15 3.5v4h4M8.5 11h7M8.5 14h7M8.5 17h4"/></svg>
+    Tezberemo
+  </a>
+</header>
+
+<main class="sheet">
+  <h1>An Instruction for your thing</h1>
+  <p class="lead">Is your thing not here yet? Send us its paper guide, a few photos and where you got stuck. That is what we make an Instruction from.</p>
+
+  <ul class="send-list" aria-label="What to send">
+    <li>
+      <svg viewBox="0 0 48 48" class="draw" aria-hidden="true">
+        <path d="M24 13c-4-2.5-10-3-15-2v25c5-1 11-.5 15 2 4-2.5 10-3 15-2V11c-5-1-11-.5-15 2z" class="fill"/>
+        <path d="M24 13v25"/>
+        <path d="M12.5 16.5c2.8-.4 5.7 0 8 .9M12.5 21c2.8-.4 5.7 0 8 .9"/>
+        <path class="acc" d="M28 24.5l3-3 3 3 3-3M30 31h5"/>
+        <path class="acc" d="M27.5 16.4c2.3-.9 5.2-1.3 8-.9"/>
+      </svg>
+      The paper guide
+    </li>
+    <li>
+      <svg viewBox="0 0 48 48" class="draw" aria-hidden="true">
+        <rect x="14" y="6" width="20" height="36" rx="4" class="fill"/>
+        <path d="M21 9.5h6"/>
+        <rect x="17.5" y="14" width="13" height="19" rx="1.5"/>
+        <path class="acc" d="M17.5 29l4-4.5 3 3 2-2 4 3.5"/>
+        <circle class="acc" cx="27" cy="19" r="1.8"/>
+        <circle cx="24" cy="37.5" r="1.6"/>
+      </svg>
+      A few photos
+    </li>
+    <li>
+      <svg viewBox="0 0 48 48" class="draw" aria-hidden="true">
+        <path d="M9 11.5h30a3 3 0 0 1 3 3v15a3 3 0 0 1-3 3H22l-8 6.5v-6.5H9a3 3 0 0 1-3-3v-15a3 3 0 0 1 3-3z" class="fill"/>
+        <path class="acc" d="M20.5 18.5a3.5 3.5 0 1 1 5 3.2c-1 .5-1.5 1.2-1.5 2.3v.6"/>
+        <circle class="acc" cx="24" cy="28" r=".6"/>
+      </svg>
+      Where you got stuck
+    </li>
+  </ul>
+
+  <form action="https://marie0901--tezberemo-intake-web.us-east.modal.run/requests" method="post" enctype="multipart/form-data" id="ask">
+    <div class="field">
+      <label class="label" for="what">What is it? <span class="req" aria-hidden="true">*</span></label>
+      <p class="hint" id="what-hint">A robot vacuum, a stroller, a shelf. Add the brand and model if you know them.</p>
+      <input type="text" id="what" name="what" required aria-describedby="what-hint">
+    </div>
+
+    <div class="field">
+      <span class="label" id="guide-label">Paper guide <span class="opt">Optional</span></span>
+      <p class="hint">The instructions from the box. Lost them? Skip this.</p>
+      <label class="drop" id="guide-drop">
+        <input type="file" id="guide" name="guide" accept=".pdf,image/*" aria-labelledby="guide-label guide-title">
+        <span class="drop-face">
+          <svg viewBox="0 0 40 40" class="draw" aria-hidden="true"><path d="M9 4.5h15l7 7v24H9z" class="fill"/><path d="M24 4.5v7h7"/><path class="acc" d="M20 30V18M15 22.5l5-4.5 5 4.5"/></svg>
+          <span class="drop-text">
+            <span class="drop-title" id="guide-title">Add the paper guide</span>
+            <span class="drop-sub">A PDF, or photos of the pages</span>
+          </span>
+        </span>
+      </label>
+      <p class="doc" id="guide-file" hidden>
+        <svg viewBox="0 0 24 24" class="draw" aria-hidden="true"><path d="M5 2.5h9l5 5v14H5z" class="fill"/><path d="M14 2.5v5h5M8.5 12h7M8.5 15h7M8.5 18h4"/></svg>
+        <span></span>
+      </p>
+    </div>
+
+    <div class="field">
+      <span class="label" id="photos-label">Photos <span class="req" aria-hidden="true">*</span></span>
+      <p class="hint">Up to 6 photos.</p>
+      <label class="drop big" id="photos-drop">
+        <input type="file" id="photos" name="photos" accept="image/*" multiple required aria-labelledby="photos-label photos-title" aria-describedby="photos-sub">
+        <span class="drop-face">
+          <svg viewBox="0 0 40 40" class="draw" aria-hidden="true"><path d="M5 13a3 3 0 0 1 3-3h4.5l2.5-4h10l2.5 4H32a3 3 0 0 1 3 3v17a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3z" class="fill"/><circle cx="20" cy="21" r="6.5"/><path class="acc" d="M20 18v6M17 21h6"/></svg>
+          <span class="drop-text">
+            <span class="drop-title" id="photos-title">Add photos</span>
+            <span class="drop-sub" id="photos-sub">The whole thing · the parts laid out · the bag of screws · the label with the model</span>
+          </span>
+        </span>
+      </label>
+      <ul class="shots" id="shots" aria-hidden="true"></ul>
+      <p class="count" id="count" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label class="label" for="stuck">Where did you get stuck?</label>
+      <p class="hint" id="stuck-hint">Or what is missing from the paper guide. No guide? Add the size of the thing.</p>
+      <textarea id="stuck" name="stuck" rows="4" aria-describedby="stuck-hint"></textarea>
+    </div>
+
+    <div class="field">
+      <label class="label" for="email">Your email <span class="req" aria-hidden="true">*</span></label>
+      <p class="hint" id="email-hint">We answer here.</p>
+      <input type="email" id="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="email-hint">
+    </div>
+
+    <fieldset>
+      <legend>This thing is</legend>
+      <div class="seg">
+        <label><input type="radio" name="role" value="home" checked><span>mine, at home</span></label>
+        <label><input type="radio" name="role" value="maker"><span>we make it</span></label>
+        <label><input type="radio" name="role" value="seller"><span>we sell it</span></label>
+      </div>
+    </fieldset>
+
+    <div class="trap" aria-hidden="true">
+      <label for="website">Website (leave this empty)</label>
+      <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+    </div>
+
+    <div class="actions">
+      <button type="submit" id="send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 10 14M21 3l-7 18-4-7-7-4z"/></svg>
+        <span>Send</span>
+      </button>
+      <p class="status" id="status" aria-live="polite">Photos take a moment to send.</p>
+    </div>
+  </form>
+
+  <div class="fine">
+    <p>
+      <svg viewBox="0 0 24 24" class="draw" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5M12 14.5v2"/></svg>
+      Only our team sees what you send. We use it only to make this Instruction. Ask, and we delete it.
+    </p>
+    <p>
+      <svg viewBox="0 0 24 24" class="draw" aria-hidden="true"><path d="M3 9.5a2.5 2.5 0 0 1 2.5-2.5h13A2.5 2.5 0 0 1 21 9.5v5a2.5 2.5 0 0 1-2.5 2.5h-3.2l-1.8-2.2a1.9 1.9 0 0 0-3 0L8.7 17H5.5A2.5 2.5 0 0 1 3 14.5z"/></svg>
+      To follow an Instruction you need a Meta Quest headset.
+    </p>
+  </div>
+  <a class="back" href="../">← All instructions</a>
+</main>
+
+<script>
+(function () {
+  var MAX = 6;
+  var form = document.getElementById('ask');
+  var photos = document.getElementById('photos');
+  var shots = document.getElementById('shots');
+  var count = document.getElementById('count');
+  var guide = document.getElementById('guide');
+  var guideFile = document.getElementById('guide-file');
+  var urls = [];
+
+  function showPhotos() {
+    urls.forEach(function (u) { URL.revokeObjectURL(u); });
+    urls = [];
+    shots.innerHTML = '';
+    var files = Array.prototype.slice.call(photos.files || []);
+    files.slice(0, 12).forEach(function (f) {
+      var li = document.createElement('li');
+      if (/^image\//.test(f.type)) {
+        var img = document.createElement('img');
+        var u = URL.createObjectURL(f);
+        urls.push(u);
+        img.src = u; img.alt = '';
+        li.appendChild(img);
+      }
+      shots.appendChild(li);
+    });
+    var n = files.length;
+    document.getElementById('photos-drop').classList.toggle('has', n > 0);
+    document.getElementById('photos-title').textContent = n ? 'Change photos' : 'Add photos';
+    count.classList.toggle('over', n > MAX);
+    count.textContent = !n ? '' : n > MAX
+      ? n + ' chosen. Up to ' + MAX + ', please choose again.'
+      : n + ' of ' + MAX;
+  }
+
+  function showGuide() {
+    var f = guide.files && guide.files[0];
+    guideFile.hidden = !f;
+    guideFile.querySelector('span').textContent = f ? f.name + (guide.files.length > 1 ? ' and ' + (guide.files.length - 1) + ' more' : '') : '';
+    document.getElementById('guide-drop').classList.toggle('has', !!f);
+    document.getElementById('guide-title').textContent = f ? 'Change the paper guide' : 'Add the paper guide';
+  }
+
+  photos.addEventListener('change', showPhotos);
+  guide.addEventListener('change', showGuide);
+  if (photos.files && photos.files.length) showPhotos();
+  if (guide.files && guide.files.length) showGuide();
+
+  form.addEventListener('submit', function (e) {
+    if (photos.files && photos.files.length > MAX) {
+      e.preventDefault();
+      photos.focus();
+      return;
+    }
+    var btn = document.getElementById('send');
+    if (btn.disabled) { e.preventDefault(); return; }
+    btn.disabled = true;
+    btn.querySelector('span').textContent = 'Sending…';
+    document.getElementById('status').textContent = 'Sending… photos take a moment.';
+  });
+
+  // Coming back with the browser's back button: let them send again.
+  window.addEventListener('pageshow', function () {
+    var btn = document.getElementById('send');
+    btn.disabled = false;
+    btn.querySelector('span').textContent = 'Send';
+    document.getElementById('status').textContent = 'Photos take a moment to send.';
+  });
+})();
+</script>
+</body>
+</html>
