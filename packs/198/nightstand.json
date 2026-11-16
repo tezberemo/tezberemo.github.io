@@ -1,0 +1,9 @@
+{
+    "id": "nightstand",
+    "title": "Nightstand with drawers",
+    "versionCode": 198,
+    "unity": "6000.3.26f1",
+    "crc": 1401759557,
+    "prefab": "Assets/Packs/nightstand/nightstand.prefab",
+    "instruction": "Assets/Packs/nightstand/Content/nightstand.asset"
+}
